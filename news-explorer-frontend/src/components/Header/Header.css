@@ -1,0 +1,77 @@
+.header{
+  background: url('../../images/georgia-de-lotz-ziTfRkT7VGE-unsplash\ \(1\).jpg') center center/cover;
+  display:flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center;
+  width:100%;
+  z-index:2;
+  position:relative;
+  margin:auto;
+}
+
+.header__content {
+  width:100%;
+  max-width:608px;
+  height: 100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:center;
+  padding:136px 0 80px;
+  box-sizing: border-box;
+}
+
+.header::after {
+  content:'';
+  background-color:rgb(15, 15, 15);
+  opacity:0.3;
+  width:100%;
+  height: 100%;
+  position:absolute;
+  z-index:-1
+}
+
+.header__title {
+  margin:0;
+  font-weight: 400;
+  font-size:60px;
+  line-height:64px;
+  font-family:'Roboto Slab', sans-serif;
+}
+
+.header__subtitle {
+  margin:0;
+  font-weight:normal;
+  font-size:18px;
+  line-height:24px;
+  margin-top:32px;
+  margin-bottom: 32px;
+}
+
+@media screen and (max-width:800px) {
+  .header__title {
+    font-size:36px;
+    line-height:40px;
+    
+  }
+
+  .header__subtitle {
+    margin:16px 0;
+  }
+
+  .header__content {
+    padding:104px 0px 38px;
+    max-width: 448px;
+  }
+}
+
+@media screen and (max-width:650px) {
+  .header__content {
+    padding:86px 16px 32px;
+  }
+  .header__dark-background::after {
+    opacity:0.5;
+    z-index:0;
+  } 
+} 

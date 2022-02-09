@@ -1,0 +1,56 @@
+.preloader {
+  background: #F5F6F7;
+  color:#1A1B22;
+  width:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
+  padding:80px 0;
+}
+
+.preloader__img {
+  width:96px;
+  height:96px;
+  background: url(../../images/Ellipse.png) center center no-repeat;
+}
+
+.preloader__img_searching {
+  animation: searching 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes searching {
+  from {
+    transform:rotate(0deg)
+  }
+  to {
+    transform:rotate(360deg)
+  }
+}
+
+.preloader__img_not-found {
+  background: url(../../images/not-found.svg) center center;
+}
+
+.preloader__subtitle {
+ margin:0;
+ text-align: center;
+ margin-top:24px;
+ font-size:18px;
+ line-height:24px;
+ max-width:356px;
+ color:#B6BCBF;
+ padding:0 60px;
+ box-sizing: border-box;
+}
+
+.preloader__title {
+  margin:0;
+  margin-top:24px;
+  text-align:center;
+  font-family:'Roboto Slab',sans-serif;
+  font-size:26px;
+  line-height: 30px;
+  font-weight:400;
+}
