@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import closebtn from '../../images/close.svg';
 import './PopupWithForm.css';
 
@@ -13,13 +13,13 @@ function PopupWithForm(props) {
     value: '',
     error: '',
     isValid: false,
-  })
+  });
   const [emailInputfield, setEmailInputField] = useState({
     field: '',
     value: '',
     error: '',
     isValid: false,
-  })
+  });
   const [passwordInputfield, setPasswordInputField] = useState({
     field: '',
     value: '',
@@ -33,8 +33,17 @@ function PopupWithForm(props) {
   const [formIsValid, setFormIsValid] = useState(false);
   const navigate = useNavigate();
 
+  const toggleBtnState = () => {
+    if (formIsValid) {
+      setSubmitButtonClass('');
+    }
+    if (!formIsValid) {
+      setSubmitButtonClass('popup__submit-btn_disabled');
+    }
+  };
+
   useEffect(() => {
-    setFormIsValid(isSignInPopupOpen ? signinFormValid : signupFormValid)
+    setFormIsValid(isSignInPopupOpen ? signinFormValid : signupFormValid);
   }, [signinFormValid, signupFormValid]);
 
   useEffect(() => {
@@ -43,38 +52,41 @@ function PopupWithForm(props) {
 
   const close = () => {
     props.onClosePopup();
-    navigate('/')
-  }
+    navigate('/');
+  };
 
   const handleClickOnOverlayClose = () => {
     close();
-  }
+  };
 
   const handleSigninSubmit = (email, password) => {
     if (!email || !password) {
       return;
     }
+
     props.handleLoggedIn();
     props.setPopupOpenClass('');
     props.onClosePopup();
     navigate('/saved-news');
-  }
+  };
 
   const handleSignUpSubmit = (email, password, username) => {
     if (!email || !password || !username) {
       return;
     }
+
     const newUser = {
       name: nameInputfield.value,
       password: passwordInputfield.value,
       email: emailInputfield.value,
-    }
+    };
+
     users.push(newUser);
     props.setUsersCollection(users);
     props.onClosePopup();
     props.setFeedbackPopupOpenClass('info-popup_open');
     props.setIsInfoTooltipOpen(true);
-  }
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -82,16 +94,18 @@ function PopupWithForm(props) {
     const password = passwordInputfield.value;
     const username = nameInputfield.value;
 
-    if (isSignInPopupOpen)
+    if (isSignInPopupOpen) {
       handleSigninSubmit(email, password);
+    }
 
-    if (!isSignInPopupOpen)
+    if (!isSignInPopupOpen) {
       handleSignUpSubmit(email, password, username);
-  }
+    }
+  };
 
   const switchModelHandler = () => {
     setSubmitButtonClass('popup__submit-btn_disabled');
-    setFormIsValid(false)
+    setFormIsValid(false);
     props.setIsSignInPopupOpen((prevState) => !prevState);
     setEmailInputField({
       value: '',
@@ -102,7 +116,7 @@ function PopupWithForm(props) {
     setPasswordInputField({
       value: '',
     });
-  }
+  };
 
   const handleEmailValidation = (field, value) => {
     if (!value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
@@ -111,7 +125,7 @@ function PopupWithForm(props) {
         value,
         error: 'not valid email',
         isValid: false,
-      })
+      });
     }
     else {
       setEmailInputField({
@@ -119,9 +133,9 @@ function PopupWithForm(props) {
         value,
         error: '',
         isValid: true,
-      })
+      });
     }
-  }
+  };
 
   const handleNameValidation = (field, value) => {
     if (!value.match(/^[a-zA-Z]+$/)) {
@@ -130,7 +144,7 @@ function PopupWithForm(props) {
         value,
         error: 'not valid name',
         isValid: false,
-      })
+      });
     }
     else {
       setNameInputField({
@@ -138,9 +152,9 @@ function PopupWithForm(props) {
         value,
         error: '',
         isValid: true,
-      })
+      });
     }
-  }
+  };
 
   const handlePasswordValidation = (field, value) => {
     if (value.length < 2) {
@@ -149,7 +163,7 @@ function PopupWithForm(props) {
         value,
         error: 'minimum 2 length needed',
         isValid: false,
-      })
+      });
     }
     else {
       setPasswordInputField({
@@ -157,36 +171,28 @@ function PopupWithForm(props) {
         value,
         error: '',
         isValid: true,
-      })
+      });
     }
-  }
-
-  const toggleBtnState = () => {
-    if (formIsValid) {
-      setSubmitButtonClass('')
-    }
-    if (!formIsValid) {
-      setSubmitButtonClass('popup__submit-btn_disabled')
-    }
-  }
+  };
 
   const handleValidation = (field, value) => {
-    if (field === 'email')
-      handleEmailValidation(field, value)
-
-    if (field === 'name')
-      handleNameValidation(field, value)
-
-    if (field === 'password')
-      handlePasswordValidation(field, value)
-  }
+    if (field === 'email') {
+      handleEmailValidation(field, value);
+    }
+    if (field === 'name') {
+      handleNameValidation(field, value);
+    }
+    if (field === 'password') {
+      handlePasswordValidation(field, value);
+    }
+  };
 
   const handleChange = (e) => {
     const field = e.target.name;
-    const value = e.target.value
+    const value = e.target.value;
 
-    handleValidation(field, value)
-  }
+    handleValidation(field, value);
+  };
 
   return (
     <div className={`popup ${popupOpen}`} onClick={handleClickOnOverlayClose} tabIndex="0">
@@ -252,11 +258,10 @@ function PopupWithForm(props) {
               </Link>
             </div>
           </div>
-
         </form>
       </div>
     </div>
-  )
+  );
 }
 
 export default PopupWithForm;

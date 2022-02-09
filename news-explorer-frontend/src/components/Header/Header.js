@@ -1,4 +1,4 @@
-import Navigation from '../../components/Navigation/Navigation';
+import Navigation from '../Navigation/Navigation';
 import SearchForm from '../SearchForm/SearchForm';
 
 function Header(props) {
@@ -25,7 +25,7 @@ function Header(props) {
         />
       </div>
     </header>
-  )
+  );
 }
 
 export default Header;

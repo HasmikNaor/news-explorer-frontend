@@ -1,4 +1,5 @@
 import './NewsCard.css';
+
 function NewCard(props) {
   const loggedIn = props.loggedIn;
   const {
@@ -33,6 +34,7 @@ function NewCard(props) {
         <p className='articles__source'>{source}</p>
       </div>
     </article>
-  )
+  );
 }
+
 export default NewCard;

@@ -1,5 +1,6 @@
 import './SavedNewsHeader.css';
-import Navigation from '../Navigation/Navigation'
+import Navigation from '../Navigation/Navigation';
+
 function SavedNewsHeader(props) {
   const { name, length, keywords } = props.user;
   const kewordsLength = keywords.length;
@@ -19,6 +20,7 @@ function SavedNewsHeader(props) {
         <p className='loggedin-header__keywords-container'>By keywords <span className='loggedin-header__keywords'>{keywords[0]}, {keywords[1]} and {kewordsLength - 2} other</span></p>
       </div>
     </header>
-  )
+  );
 }
+
 export default SavedNewsHeader;

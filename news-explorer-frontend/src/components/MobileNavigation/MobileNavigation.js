@@ -1,7 +1,6 @@
 import './MobileNavigation.css';
 import { Link } from 'react-router-dom';
 import logout from '../../images/logout.svg';
-import { useState } from 'react'
 
 function Mobilenavigation(props) {
   const loggedIn = props.loggedIn;
@@ -11,11 +10,12 @@ function Mobilenavigation(props) {
 
   const handleSigninBtnClick = () => {
     props.handleSignin();
-    props.setIsMobileNavOpen(false)
-  }
+    props.setIsMobileNavOpen(false);
+  };
+
   const logoutClickHandler = () => {
     props.logoutClickHandler();
-  }
+  };
 
   return (
     <nav className={`mobile-navigation  ${loggedInStyleClass} ${props.navMenuOpenClass}`} >
@@ -37,7 +37,7 @@ function Mobilenavigation(props) {
         </li>}
       </ul>
     </nav >
-  )
+  );
 }
 
 export default Mobilenavigation;

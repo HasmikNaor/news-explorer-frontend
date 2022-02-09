@@ -17,7 +17,7 @@ function Preloader(props) {
         <p className='preloader__subtitle'>Sorry, but nothing matched your search terms.</p>
       </div>}
     </section>
-  )
+  );
 }
 
 export default Preloader;

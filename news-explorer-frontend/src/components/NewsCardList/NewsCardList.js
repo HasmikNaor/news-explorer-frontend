@@ -3,8 +3,6 @@ import './NewsCardList.css';
 
 function NewsCardList(props) {
   const loggedIn = props.loggedIn;
-  // const articlesLength = props.articles.length;
-  // const foundArticles = articlesLength > 0;
 
   return (
     <section className='articles'>
@@ -16,7 +14,7 @@ function NewsCardList(props) {
       </div>
       <button className='articles__btn' type='reset'>Show more</button>
     </section>
-  )
+  );
 }
 
 export default NewsCardList;

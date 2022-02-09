@@ -14,18 +14,18 @@ function Navigation(props) {
   const navigate = useNavigate();
 
   const onNavMenuClickHandler = () => {
-    props.setIsMobileNavOpen((prevState) => !prevState)
-  }
+    props.setIsMobileNavOpen((prevState) => !prevState);
+  };
 
   const logoutClickHandler = () => {
     props.handleLoggedIn();
     navigate('/');
-  }
+  };
 
   const handleSigninBtnClick = () => {
     props.setIsSignInPopupOpen(true);
     props.setPopupOpenClass('popup_open');
-  }
+  };
 
   return (
     <div className='nav-container'>
@@ -57,7 +57,7 @@ function Navigation(props) {
         logoutClickHandler={logoutClickHandler}
       />
     </div>
-  )
+  );
 }
 
 export default Navigation;

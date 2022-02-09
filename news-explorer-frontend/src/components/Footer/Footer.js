@@ -1,6 +1,7 @@
 import cat from '../../images/cat.png';
 import facebook from '../../images/facebook.png';
-import './Footer.css'
+import './Footer.css';
+
 function Footer() {
   return (
     <footer className='footer'>
@@ -18,7 +19,7 @@ function Footer() {
         </ul>
       </div>
     </footer>
-  )
+  );
 }
 
 export default Footer;

@@ -1,5 +1,10 @@
 import './App.css';
 import React, { useState } from 'react';
+import {
+  Route,
+  Routes,
+} from 'react-router-dom';
+import users from '../../data/users';
 
 import img1 from '../../images/image_01.png';
 import img2 from '../../images/image_04.png';
@@ -11,14 +16,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
-import InfoTooltip from '../InfoTooltip/InfoTooltip'
-import {
-  Route,
-  Routes,
-  Navigate,
-  useNavigate,
-} from 'react-router-dom';
-import users from '../../data/users';
+import InfoTooltip from '../InfoTooltip/InfoTooltip';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -71,16 +69,16 @@ function App() {
       source: 'treehugger',
       image: img5,
       _id: 5,
-    }
-  ]
+    },
+  ];
   const [articlesForDisplay, setArticlesForDisplay] = useState(articles);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const length = articles.length;
   const currentUser = {
     name: 'Elise',
     length,
-    keywords: ['Nature', 'Yellowstone', 'Parks', 'photograpy']
-  }
+    keywords: ['Nature', 'Yellowstone', 'Parks', 'photograpy'],
+  };
   const [isSignInPopupOpen, setIsSignInPopupOpen] = useState(true);
   const [popupOpenClass, setPopupOpenClass] = useState('');
   const [feedbackPopupOpenClass, setFeedbackPopupOpenClass] = useState('info-popup_open');
@@ -89,44 +87,47 @@ function App() {
   let navChangeBackground;
   let headerDarkBackgroundClass;
   let navMobileCloseBtnClass;
-  const navigate = useNavigate();
 
   if (isMobileNavOpen) {
-    if (loggedIn)
+    if (loggedIn) {
       navMobileCloseBtnClass = 'navigation__close-btn_loggedin';
-    if (!loggedIn)
+    }
+    if (!loggedIn) {
       navMobileCloseBtnClass = 'navigation__close-btn';
+    }
+
     navChangeBackground = navMenuOpenClass ? 'nav-container_change-background' : '';
     headerDarkBackgroundClass = isMobileNavOpen ? 'header__dark-background' : '';
   }
-  console.log(popupOpenClass)
+
   const closePopup = () => {
-    console.log('closepopup')
     setIsSignInPopupOpen(false);
     setPopupOpenClass('');
     setIsInfoTooltipOpen(false);
-  }
+  };
 
   const handleLoggedIn = () => {
-    setLoggedIn((prevState) => !prevState)
-  }
+    setLoggedIn((prevState) => !prevState);
+  };
 
   const handleSearchCards = (keyword) => {
     setIsSearchingCards(true);
-    const searchedCards = articles.filter((article) => article.keyword.toLowerCase() === keyword.toLowerCase());
+    const searchedCards = articles
+      .filter((article) => article.keyword.toLowerCase() === keyword.toLowerCase());
 
     setTimeout(() => {
       setArticlesForDisplay(searchedCards);
     }, 1000);
 
     setTimeout(() => {
-      setIsSearchingCards(false)
+      setIsSearchingCards(false);
     }, 2000);
-  }
+  };
 
   const handleLogin = () => {
-    setLoggedIn(true)
-  }
+    setLoggedIn(true);
+  };
+
   return (
     <div className="app">
       <div className='app__page'>
@@ -187,6 +188,6 @@ function App() {
       </div>
     </div>
   );
-
 }
+
 export default App;
