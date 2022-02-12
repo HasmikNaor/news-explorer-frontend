@@ -5,6 +5,7 @@
   width:100%;
   font-family: 'Roboto', sans-serif;
 }
+
 .app__page {
   width:100%;
   color:white;
@@ -16,6 +17,7 @@
   box-sizing:border-box;
   font-family:'inter', Arial, sans-serif;
 }
+
 @media screen and (max-width:500px) {
   .page {
     padding-top:28px;

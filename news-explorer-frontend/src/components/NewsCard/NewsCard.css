@@ -4,7 +4,7 @@
   width:100%;
   height:100%;
   position:relative;
-  
+  background-color:white;
 }
 .articles__img {
   width:100%;
@@ -30,32 +30,37 @@
   background-color: #FFF;
   padding:8px 22px;
   box-shadow: 0px 10px 22px rgba(59, 74, 116, 0.1);
-border-radius: 10px;
+  border-radius: 10px;
 }
 .articles__hover-text {
   position: absolute;
-  top: 24px;
+  top: 4.21%;;
   right:69px;
   margin:0;
   background-color: #FFF;
-  padding:11px 20px;
+  padding:11px 19px;
   box-shadow: 0px 10px 22px rgba(59, 74, 116, 0.1);
-border-radius: 10px;
-font-size:12px;
-line-height: 18px;
-font-weight:500;
-color:#000;
-text-overflow: ellipsis;
-white-space: nowrap;
-overflow: hidden;
-max-width:182px;
-box-sizing: border-box;
+  border-radius: 10px;
+  font-size:12px;
+  line-height: 18px;
+  font-weight:500;
+  color:#000;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width:182px;
+  box-sizing: border-box;
+  visibility: hidden;
+}
+
+.articles__hover-text_visible {
+  visibility:visible;
 }
 
 .articles__trash-btn {
   position: absolute;
-  top: 24px;
-  right:24px;
+  top: 4.21%;
+  right: 6%;
   background: url(../../images/trash.svg) no-repeat center center;
   width:40px;
   height:40px;
@@ -66,8 +71,10 @@ box-sizing: border-box;
   background-color:#FFFFFF
 }
 
-.articles__trash-btn_hover {
-  background: url(../../images/trash-hover.svg);
+.articles__trash-btn:hover {
+  background-color:#FFFFFF;
+  background: url(../../images/trash-hover.svg) no-repeat center center;
+  cursor: pointer;
 }
 
 .articles__date {
@@ -113,12 +120,13 @@ box-sizing: border-box;
   line-height: 20px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
+  text-align: start;
   margin:0;
 }
 .articles__signin-btn {
   position:absolute;
-  top:24px;
-  right:24px;
+  top: 4.21%;
+  right: 6%;
   border:none;
   border-radius: 8px;
   background:url(../../images/signin.svg)no-repeat center center;
@@ -126,9 +134,10 @@ box-sizing: border-box;
   width:40px;
   min-height: 40px;
   padding:11px 13px;
+  cursor: pointer;
 }
 
-.articles__signin-btn_hover {
+.articles__signin-btn_saved {
   background:url(../../images/signin-bold.svg)no-repeat center center;
 }
 .articles__signin_img {
@@ -144,4 +153,29 @@ box-sizing: border-box;
   margin-left:15px;
   }
 
+  .articles__signin-btn {
+    right:3.57%;
+    top:1.305%;
+  }
+  .articles__trash-btn {
+    right:3.57%;
+    top:1.305%;
+  }
+  .articles__hover-text {
+    top:1.305%;
+    right:58px;
+  }
+
+}
+
+@media screen and (max-width:800px){
+  .articles__signin-btn {
+    /* top:8px;
+    right:8px; */
+  }
+  .articles__hover-text {
+    /* top:8px;
+    left:8px; */
+    /* right:54px; */
+  }
 }

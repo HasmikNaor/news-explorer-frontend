@@ -1,0 +1,11 @@
+.app__page {
+  width:100%;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  box-sizing:border-box;
+  font-family:'inter', Arial, sans-serif;
+}

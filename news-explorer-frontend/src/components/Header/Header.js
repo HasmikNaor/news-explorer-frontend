@@ -2,19 +2,9 @@ import Navigation from '../Navigation/Navigation';
 import SearchForm from '../SearchForm/SearchForm';
 
 function Header(props) {
-  const user = props.currentUser;
-
   return (
     <header className={`header ${props.headerDarkBackgroundClass}`}>
-      <Navigation
-        loggedIn={props.loggedIn}
-        currentUser={user}
-        handleLoggedIn={props.handleLoggedIn} setIsMobileNavOpen={props.setIsMobileNavOpen} isMobileNavOpen={props.isMobileNavOpen} navMenuOpenClass={props.navMenuOpenClass} navChangeBackground={props.navChangeBackground} navMobileCloseBtnClass={props.navMobileCloseBtnClass}
-        setIsSignInPopupOpen={props.setIsSignInPopupOpen}
-        isSignInPopupOpen={props.isSignInPopupOpen}
-        setPopupOpenClass={props.setPopupOpenClass}
-        handle
-      />
+      <Navigation {...props} />
       <div className='header__content'>
         <div className='header__description'>
           <h1 className='header__title'>What's going on in the world?</h1>

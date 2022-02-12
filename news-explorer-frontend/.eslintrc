@@ -7,5 +7,6 @@
     "no-useless-escape": "off",
     "brace-style": "off",
     "operator-linebreak": "off",
+    "no-trailing-spaces": "off",
   }
 }

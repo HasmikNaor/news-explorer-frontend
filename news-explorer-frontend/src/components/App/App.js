@@ -1,8 +1,10 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Route,
   Routes,
+  useLocation,
+  useNavigate,
 } from 'react-router-dom';
 import users from '../../data/users';
 
@@ -12,11 +14,11 @@ import img3 from '../../images/image_05.png';
 import img4 from '../../images/image_06.png';
 import img5 from '../../images/image_08.png';
 import Main from '../Main/Main';
-import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
-import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
+import Header from '../Header/Header';
+import PopupWithForm from '../PopupWithForm/PopupWithForm';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -24,6 +26,7 @@ function App() {
   const [usersCollection, setUsersCollection] = useState([users]);
 
   const [isSearchingCards, setIsSearchingCards] = useState(false);
+  const [currentPage, setCurrentPage] = useState('');
   const articles = [
     {
       keyword: 'Nature',
@@ -79,10 +82,22 @@ function App() {
     length,
     keywords: ['Nature', 'Yellowstone', 'Parks', 'photograpy'],
   };
-  const [isSignInPopupOpen, setIsSignInPopupOpen] = useState(true);
-  const [popupOpenClass, setPopupOpenClass] = useState('');
+  const [isSignInPopupOpen, setIsSignInPopupOpen] = useState(false);
+  const [isRegisterPopupOpen, setIsRegisterPopupOpen] = useState(false);
   const [feedbackPopupOpenClass, setFeedbackPopupOpenClass] = useState('info-popup_open');
+  const [linkColorClass, setLinkColorClass] = useState('');
+  const [navBackgroundTypeClass, setNavBackgroundTypeClass] = useState('');
+  const [currentTypeClass, setCurrentTypeClass] = useState('');
+  const [mobileNavTypeClass, setMobileNavTypeClass] = useState('');
+  const [mobileLinkTypeClass, setMobileLinkTypeClass] = useState('');
   const navMenuOpenClass = isMobileNavOpen ? 'mobile-navigation_open' : '';
+  const location = useLocation();
+  const navigate = useNavigate();
+  const path = location.pathname;
+  // when the user refreshes the page, the page returns to the home page.
+  useEffect(() => {
+    navigate('/');
+  }, []);
 
   let navChangeBackground;
   let headerDarkBackgroundClass;
@@ -99,11 +114,37 @@ function App() {
     navChangeBackground = navMenuOpenClass ? 'nav-container_change-background' : '';
     headerDarkBackgroundClass = isMobileNavOpen ? 'header__dark-background' : '';
   }
+  const navStyleHandler = () => {
+    if (path === '/') {
+      setCurrentTypeClass('navigation__list-item_current_bright');
+      setLinkColorClass('');
+      setNavBackgroundTypeClass('');
+      setCurrentPage('home');
+      setMobileNavTypeClass('mobile-navigation_theme_dark');
+
+      if (isMobileNavOpen) {
+        setNavBackgroundTypeClass('nav-container_theme_dark');
+        setMobileLinkTypeClass('mobile-navigation__link_type_bright');
+      }
+    }
+    if (path === '/saved-news' && loggedIn) {
+      setCurrentTypeClass('navigation__list-item_current_dark');
+      setLinkColorClass('navigation__link_type_dark');
+      setNavBackgroundTypeClass('navigation_theme_bright');
+      setCurrentPage('saved articles');
+      setMobileNavTypeClass('mobile-navigation_theme_bright');
+
+      if (isMobileNavOpen) {
+        setNavBackgroundTypeClass('nav-container_theme_bright');
+        setMobileLinkTypeClass('mobile-navigation__link_type_dark');
+      }
+    }
+  };
 
   const closePopup = () => {
     setIsSignInPopupOpen(false);
-    setPopupOpenClass('');
     setIsInfoTooltipOpen(false);
+    setIsRegisterPopupOpen(false);
   };
 
   const handleLoggedIn = () => {
@@ -124,34 +165,126 @@ function App() {
     }, 2000);
   };
 
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
-
   return (
     <div className="app">
       <div className='app__page'>
-        {!loggedIn && <Header
-          loggedIn={loggedIn}
-          isMobileNavOpen={isMobileNavOpen}
-          setIsMobileNavOpen={setIsMobileNavOpen}
-          navMenuOpenClass={navMenuOpenClass}
-          navChangeBackground={navChangeBackground} navMobileCloseBtnClass={navMobileCloseBtnClass} headerDarkBackgroundClass={headerDarkBackgroundClass}
-          setIsSearchingCards={setIsSearchingCards}
-          onSearch={handleSearchCards}
-          setIsSignInPopupOpen={setIsSignInPopupOpen}
-          isSignInPopupOpen={isSignInPopupOpen}
-          setPopupOpenClass={setPopupOpenClass}
-          handleLoggedIn={handleLoggedIn}
-        />}
+        <Routes>
+          <Route path='/' element={
+            <Header
+              currentUser={currentUser}
+              loggedIn={loggedIn}
+              handleLoggedIn={handleLoggedIn}
+              setIsMobileNavOpen={setIsMobileNavOpen}
+              navMenuOpenClass={navMenuOpenClass}
+              navChangeBackground={navChangeBackground} navMobileCloseBtnClass={navMobileCloseBtnClass} headerDarkBackgroundClass={headerDarkBackgroundClass}
+              setIsMobileNavOpen={setIsMobileNavOpen}
+              onSearch={handleSearchCards}
+              setIsSignInPopupOpen={setIsSignInPopupOpen}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              navStyleHandler={navStyleHandler}
+              linkColorClass={linkColorClass}
+              currentTypeClass={currentTypeClass}
+              navBackgroundTypeClass={navBackgroundTypeClass}
+              mobileNavTypeClass={mobileNavTypeClass}
+              mobileLinkTypeClass={mobileLinkTypeClass}
+            />
+          } />
+          <Route path='/signin' element={<>
+            <Header
+              currentUser={currentUser}
+              loggedIn={loggedIn}
+              handleLoggedIn={handleLoggedIn}
+              setIsMobileNavOpen={setIsMobileNavOpen}
+              navMenuOpenClass={navMenuOpenClass}
+              navChangeBackground={navChangeBackground} navMobileCloseBtnClass={navMobileCloseBtnClass} headerDarkBackgroundClass={headerDarkBackgroundClass}
+              setIsMobileNavOpen={setIsMobileNavOpen}
+              onSearch={handleSearchCards}
+              setIsSignInPopupOpen={setIsSignInPopupOpen}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              navStyleHandler={navStyleHandler}
+              linkColorClass={linkColorClass}
+              currentTypeClass={currentTypeClass}
+              navBackgroundTypeClass={navBackgroundTypeClass}
+              mobileNavTypeClass={mobileNavTypeClass}
+              mobileLinkTypeClass={mobileLinkTypeClass}
+            />
+            <PopupWithForm
+              isSignInPopupOpen={isSignInPopupOpen}
+              setIsSignInPopupOpen={setIsSignInPopupOpen}
+              isRegisterPopupOpen={isRegisterPopupOpen}
+              setIsRegisterPopupOpen={setIsRegisterPopupOpen}
+              onClosePopup={closePopup}
+              handleLoggedIn={handleLoggedIn}
+              users={usersCollection}
+              setUsersCollection={setUsersCollection}
+              setIsInfoTooltipOpen={setIsInfoTooltipOpen}
+              feedbackPopupOpenClass={feedbackPopupOpenClass}
+              setFeedbackPopupOpenClass={setFeedbackPopupOpenClass}
+              handleLoggedIn={handleLoggedIn}
+              navStyleHandler={navStyleHandler}
+            />
+          </>} />
+          <Route path='/signup' element={<>
+            <Header
+              currentUser={currentUser}
+              loggedIn={loggedIn}
+              handleLoggedIn={handleLoggedIn}
+              setIsMobileNavOpen={setIsMobileNavOpen}
+              navMenuOpenClass={navMenuOpenClass}
+              navChangeBackground={navChangeBackground} navMobileCloseBtnClass={navMobileCloseBtnClass} headerDarkBackgroundClass={headerDarkBackgroundClass}
+              setIsMobileNavOpen={setIsMobileNavOpen}
+              onSearch={handleSearchCards}
+              setIsSignInPopupOpen={setIsSignInPopupOpen}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              navStyleHandler={navStyleHandler}
+              linkColorClass={linkColorClass}
+              currentTypeClass={currentTypeClass}
+              navBackgroundTypeClass={navBackgroundTypeClass}
+              mobileNavTypeClass={mobileNavTypeClass}
+              mobileLinkTypeClass={mobileLinkTypeClass}
+            />
+            <PopupWithForm
+              isSignInPopupOpen={isSignInPopupOpen}
+              setIsSignInPopupOpen={setIsSignInPopupOpen}
+              isRegisterPopupOpen={isRegisterPopupOpen}
+              setIsRegisterPopupOpen={setIsRegisterPopupOpen}
+              onClosePopup={closePopup}
+              handleLoggedIn={handleLoggedIn}
+              users={usersCollection}
+              setUsersCollection={setUsersCollection}
+              setIsInfoTooltipOpen={setIsInfoTooltipOpen}
+              feedbackPopupOpenClass={feedbackPopupOpenClass}
+              setFeedbackPopupOpenClass={setFeedbackPopupOpenClass}
+              handleLoggedIn={handleLoggedIn}
+              navStyleHandler={navStyleHandler}
+            />
+          </>} />
+          <Route path='/saved-news' element={<SavedNewsHeader
+            loggedIn={loggedIn}
+            currentUser={currentUser}
+            isMobileNavOpen={isMobileNavOpen}
+            setIsMobileNavOpen={setIsMobileNavOpen}
+            navMenuOpenClass={navMenuOpenClass} navMobileCloseBtnClass={navMobileCloseBtnClass}
+            setLoggedIn={setLoggedIn}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+            navStyleHandler={navStyleHandler}
+            linkColorClass={linkColorClass}
+            currentTypeClass={currentTypeClass}
+            navBackgroundTypeClass={navBackgroundTypeClass}
+            mobileNavTypeClass={mobileNavTypeClass}
+            mobileLinkTypeClass={mobileLinkTypeClass}
+          />} />
+        </Routes>
 
-        {loggedIn && <SavedNewsHeader
-          user={currentUser}
-          loggedIn={loggedIn}
-          isMobileNavOpen={isMobileNavOpen}
-          setIsMobileNavOpen={setIsMobileNavOpen}
-          navMenuOpenClass={navMenuOpenClass} navMobileCloseBtnClass={navMobileCloseBtnClass}
-          setLoggedIn={setLoggedIn}
+        {isInfoTooltipOpen && <InfoTooltip
+          feedbackPopupOpenClass={feedbackPopupOpenClass}
+          setFeedbackPopupOpenClass={setFeedbackPopupOpenClass}
+          onClose={closePopup}
+          setIsSignInPopupOpen={setIsSignInPopupOpen}
         />}
 
         <Main
@@ -160,31 +293,8 @@ function App() {
           isSearchingCards={isSearchingCards}
           setIsSearchingCards={setIsSearchingCards}
         />
-        <Routes>
-          <Route path={isSignInPopupOpen ? '/signin' : '/signup'} element={<PopupWithForm
-            isSignInPopupOpen={isSignInPopupOpen}
-            setIsSignInPopupOpen={setIsSignInPopupOpen}
-            onClosePopup={closePopup}
-            popupOpenClass={popupOpenClass}
-            setPopupOpenClass={setPopupOpenClass}
-            handleLogin={handleLogin}
-            users={usersCollection}
-            setUsersCollection={setUsersCollection}
-            setIsInfoTooltipOpen={setIsInfoTooltipOpen}
-            feedbackPopupOpenClass={feedbackPopupOpenClass}
-            setFeedbackPopupOpenClass={setFeedbackPopupOpenClass}
-            handleLoggedIn={handleLoggedIn}
-          />}
-          />
-        </Routes>
-        {isInfoTooltipOpen && <InfoTooltip
-          feedbackPopupOpenClass={feedbackPopupOpenClass}
-          setFeedbackPopupOpenClass={setFeedbackPopupOpenClass}
-          onClose={closePopup}
-          setIsSignInPopupOpen={setIsSignInPopupOpen}
-          setPopupOpenClass={setPopupOpenClass}
-        />}
-        <Footer />
+        <Footer
+        />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import './Navigation.css';
 import logout from '../../images/logout.svg';
 import Mobilenavigation from '../MobileNavigation/MobileNavigation';
@@ -6,43 +7,69 @@ import Mobilenavigation from '../MobileNavigation/MobileNavigation';
 function Navigation(props) {
   const loggedIn = props.loggedIn;
   const currentUser = props.currentUser;
-  const loggedInStyleClass = loggedIn ? 'navigation__logedin' : '';
-  const loggedInLinkClass = loggedIn ? 'navigation__logedin-link' : '';
-  const loggedInCurrentClass = loggedIn ? 'navigation_current_loggedin' : '';
-  const loggedOutListItemBorderClass = !loggedIn ? 'navigation__list-item_current' : '';
+  const currentPage = props.currentPage;
+  const linkColorClass = props.linkColorClass;
+  const navBackgroundTypeClass = props.navBackgroundTypeClass;
+  const currentTypeClass = props.currentTypeClass;
 
-  const navigate = useNavigate();
-
+  // mobile navigation 
   const onNavMenuClickHandler = () => {
     props.setIsMobileNavOpen((prevState) => !prevState);
   };
 
+  useEffect(() => {
+    props.navStyleHandler();
+  }, []);
+
+  const currentPageHandler = (e) => {
+    props.setCurrentPage(e.target.name);
+    props.navStyleHandler();
+  };
+
   const logoutClickHandler = () => {
     props.handleLoggedIn();
-    navigate('/');
+    props.navStyleHandler();
   };
 
   const handleSigninBtnClick = () => {
     props.setIsSignInPopupOpen(true);
-    props.setPopupOpenClass('popup_open');
   };
 
   return (
     <div className='nav-container'>
-      <nav className={`navigation navigation_loggedout ${loggedInStyleClass} ${props.navChangeBackground}`} >
+      <nav className={`navigation ${navBackgroundTypeClass}`}>
         <div className="navigation__logo">NewsExplorer</div>
         <ul className="navigation__list">
-          <li className={`navigation__list-item ${loggedOutListItemBorderClass}`}>
-            <Link className={`navigation__link ${loggedInLinkClass}`} to="/">Home</Link>
+          <li className={`navigation__list-item ${currentPage === 'home' && currentTypeClass}`}>
+            <Link
+              className={`navigation__link 
+            ${linkColorClass}`}
+              to="/"
+              onClick={currentPageHandler}
+              name='home'>
+              Home
+            </Link>
           </li>
           {!loggedIn && <li className="navigation__list-item navigation__list-item_signin">
-            <Link className="navigation__link navigation__link_signin-btn" to="/signin" onClick={handleSigninBtnClick}>Sign in</Link>
+            <Link
+              className={`navigation__link navigation__link_signin-btn ${linkColorClass}`}
+              to="/signin"
+              onClick={handleSigninBtnClick}>
+              Sign in
+            </Link>
           </li>}
-          {loggedIn && <li className={`navigation__list-item ${loggedInCurrentClass}`}>
-            <Link className={`navigation__link navigation__link_current ${loggedInLinkClass} `} to="/saved-news">Saved articles</Link>
+          {loggedIn && <li className={`navigation__list-item ${currentPage === 'saved articles' && currentTypeClass}`}>
+            <Link
+              className={`navigation__link 
+            ${linkColorClass}`}
+              to="/saved-news"
+              name='saved articles'
+              onClick={currentPageHandler}>
+              Saved articles
+            </Link>
           </li>}
           {loggedIn && <li className="navigation__list-item navigation__list-item_logout-btn">
-            <Link className={`navigation__link navigation__link_logout ${loggedInLinkClass}`} to="/" onClick={logoutClickHandler}>
+            <Link className={`navigation__link ${linkColorClass}`} to="/" onClick={logoutClickHandler}>
               <p className='navigation__user'>{currentUser.name}</p>
               <img src={logout} />
             </Link>

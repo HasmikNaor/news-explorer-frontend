@@ -5,7 +5,9 @@ import './PopupWithForm.css';
 
 function PopupWithForm(props) {
   const isSignInPopupOpen = props.isSignInPopupOpen;
-  const popupOpen = props.popupOpenClass;
+  const isRegisterPopupOpen = props.isRegisterPopupOpen;
+  // const popupOpen = props.popupOpenClass;
+  const formIsOpen = (isSignInPopupOpen || isRegisterPopupOpen) ? 'popup_open' : '';
   const users = props.users;
   const [SubmitButtonClass, setSubmitButtonClass] = useState('popup__submit-btn_disabled');
   const [nameInputfield, setNameInputField] = useState({
@@ -65,7 +67,7 @@ function PopupWithForm(props) {
     }
 
     props.handleLoggedIn();
-    props.setPopupOpenClass('');
+    props.navStyleHandler();
     props.onClosePopup();
     navigate('/saved-news');
   };
@@ -98,7 +100,7 @@ function PopupWithForm(props) {
       handleSigninSubmit(email, password);
     }
 
-    if (!isSignInPopupOpen) {
+    if (isRegisterPopupOpen) {
       handleSignUpSubmit(email, password, username);
     }
   };
@@ -107,6 +109,7 @@ function PopupWithForm(props) {
     setSubmitButtonClass('popup__submit-btn_disabled');
     setFormIsValid(false);
     props.setIsSignInPopupOpen((prevState) => !prevState);
+    props.setIsRegisterPopupOpen((prevState) => !prevState);
     setEmailInputField({
       value: '',
     });
@@ -195,7 +198,7 @@ function PopupWithForm(props) {
   };
 
   return (
-    <div className={`popup ${popupOpen}`} onClick={handleClickOnOverlayClose} tabIndex="0">
+    <div className={`popup ${formIsOpen}`} onClick={handleClickOnOverlayClose} tabIndex="0">
       <div className="popup__content" onClick={(e) => e.stopPropagation()}>
 
         <button className={`popup__close-btn popup__close-btn_${props.name}`} onClick={close}>
@@ -213,11 +216,11 @@ function PopupWithForm(props) {
             name="email"
             type="email"
             placeholder='Enter Email'
-            className="popup__input popup__input_email"
+            className="popup__input"
             value={emailInputfield.value || ''}
             onChange={handleChange}
           />
-          <span className='popup__error_visible'>{emailInputfield.error}</span>
+          <span className='popup__error popup__error_visible'>{emailInputfield.error}</span>
           <label htmlFor='password' className='popup__label'>password</label>
           <input
             id="password"
@@ -225,13 +228,13 @@ function PopupWithForm(props) {
             name="password"
             type="password"
             placeholder="Enter password"
-            className="popup__input popup__input_password"
+            className="popup__input"
             minLength="2"
             value={passwordInputfield.value || ''}
             onChange={handleChange}
           />
           <span className='popup__error_visible'>{passwordInputfield.error}</span>
-          {!isSignInPopupOpen &&
+          {isRegisterPopupOpen &&
             <>
               <label htmlFor='name' className='popup__label'>name</label>
               <input
@@ -240,7 +243,7 @@ function PopupWithForm(props) {
                 name="name"
                 type="text"
                 placeholder="Enter your username"
-                className="popup__input popup__input_password"
+                className="popup__input"
                 minLength="2"
                 value={nameInputfield.value || ''}
                 onChange={handleChange}

@@ -1,28 +1,26 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import closebtn from '../../images/close.svg';
 import './InfoTooltip.css';
 
 function InfoTooltip(props) {
   const isOpen = props.feedbackPopupOpenClass;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleLinkClick = () => {
     props.onClose();
     props.setIsSignInPopupOpen(true);
-    props.setPopupOpenClass('popup_open');
     props.setFeedbackPopupOpenClass('');
-    navigate('/signin');
   };
 
   const close = () => {
     props.onClose();
-    navigate('/');
+    // navigate('/');
   };
 
   const handleClickOnOverlayClose = () => {
     close();
     props.setFeedbackPopupOpenClass('');
-    navigate('/');
+    // navigate('/');
   };
 
   return (
