@@ -1,11 +1,13 @@
 import './MobileNavigation.css';
 import { Link } from 'react-router-dom';
-import logout from '../../images/logout.svg';
+import logoutDark from '../../images/logout_dark.svg';
+import logoutBright from '../../images/logout_white.svg';
 
 function Mobilenavigation(props) {
   const loggedIn = props.loggedIn;
   const currentUser = props.currentUser;
-
+  const logoutImg = props.currentPage === 'home' ? logoutBright : logoutDark;
+  console.log(props.currentPage === 'home');
   const handleSigninBtnClick = () => {
     props.handleSignin();
     props.setIsMobileNavOpen(false);
@@ -35,7 +37,7 @@ function Mobilenavigation(props) {
         {loggedIn && <li className="mobile-navigation__list-item mobile-navigation__list-item_logout-btn">
           <Link className={`mobile-navigation__link mobile-navigation__link_logout-btn ${props.mobileLinkTypeClass}`} to="/" onClick={logoutClickHandler}>
             <p className='mobile-navigation__user'>{currentUser.name}</p>
-            <img src={logout} />
+            <img src={logoutImg} alt='logout' />
           </Link>
         </li>}
       </ul>

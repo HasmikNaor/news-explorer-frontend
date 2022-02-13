@@ -4,7 +4,7 @@ import {
   Route,
   Routes,
   useLocation,
-  useNavigate,
+  // useNavigate,
 } from 'react-router-dom';
 import users from '../../data/users';
 
@@ -90,56 +90,56 @@ function App() {
   const [currentTypeClass, setCurrentTypeClass] = useState('');
   const [mobileNavTypeClass, setMobileNavTypeClass] = useState('');
   const [mobileLinkTypeClass, setMobileLinkTypeClass] = useState('');
+  const [navMobileBtnClass, setNavMobileBtnClass] = useState('');
+  const [headerDarkOverlay, setHeaderDarkOverlay] = useState('');
   const navMenuOpenClass = isMobileNavOpen ? 'mobile-navigation_open' : '';
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const path = location.pathname;
-  // when the user refreshes the page, the page returns to the home page.
-  useEffect(() => {
-    navigate('/');
-  }, []);
 
-  let navChangeBackground;
-  let headerDarkBackgroundClass;
-  let navMobileCloseBtnClass;
-
-  if (isMobileNavOpen) {
-    if (loggedIn) {
-      navMobileCloseBtnClass = 'navigation__close-btn_loggedin';
+  const mobileNavStyleHandler = () => {
+    if (isMobileNavOpen && path === '/') {
+      setNavBackgroundTypeClass('nav-container_theme_dark');
+      setMobileLinkTypeClass('mobile-navigation__link_type_bright');
+      setNavMobileBtnClass('navigation__mobile-btn_close_bright');
+      setHeaderDarkOverlay('header_dark-overlay');
     }
-    if (!loggedIn) {
-      navMobileCloseBtnClass = 'navigation__close-btn';
-    }
+    console.log(headerDarkOverlay);
 
-    navChangeBackground = navMenuOpenClass ? 'nav-container_change-background' : '';
-    headerDarkBackgroundClass = isMobileNavOpen ? 'header__dark-background' : '';
-  }
+    if (isMobileNavOpen && path === '/saved-news') {
+      setNavBackgroundTypeClass('nav-container_theme_bright');
+      setMobileLinkTypeClass('mobile-navigation__link_type_dark');
+      setNavMobileBtnClass('navigation__mobile-btn_close_dark');
+    }
+  };
+
   const navStyleHandler = () => {
     if (path === '/') {
-      setCurrentTypeClass('navigation__list-item_current_bright');
+      setCurrentTypeClass('navigation__list-item_bright-border');
       setLinkColorClass('');
       setNavBackgroundTypeClass('');
       setCurrentPage('home');
       setMobileNavTypeClass('mobile-navigation_theme_dark');
+      setNavMobileBtnClass('navigation__mobile-btn_menu_bright');
+      setHeaderDarkOverlay('');
 
-      if (isMobileNavOpen) {
-        setNavBackgroundTypeClass('nav-container_theme_dark');
-        setMobileLinkTypeClass('mobile-navigation__link_type_bright');
-      }
+      mobileNavStyleHandler();
     }
-    if (path === '/saved-news' && loggedIn) {
-      setCurrentTypeClass('navigation__list-item_current_dark');
+    if (path === '/saved-news') {
+      setCurrentTypeClass('navigation__list-item_dark-border');
       setLinkColorClass('navigation__link_type_dark');
       setNavBackgroundTypeClass('navigation_theme_bright');
       setCurrentPage('saved articles');
       setMobileNavTypeClass('mobile-navigation_theme_bright');
+      setNavMobileBtnClass('navigation__mobile-btn_menu_dark');
 
-      if (isMobileNavOpen) {
-        setNavBackgroundTypeClass('nav-container_theme_bright');
-        setMobileLinkTypeClass('mobile-navigation__link_type_dark');
-      }
+      mobileNavStyleHandler();
     }
   };
+  // when the user refreshes the page, the page returns to the home page.
+  useEffect(() => {
+    navStyleHandler();
+  }, [isMobileNavOpen]);
 
   const closePopup = () => {
     setIsSignInPopupOpen(false);
@@ -176,7 +176,7 @@ function App() {
               handleLoggedIn={handleLoggedIn}
               setIsMobileNavOpen={setIsMobileNavOpen}
               navMenuOpenClass={navMenuOpenClass}
-              navChangeBackground={navChangeBackground} navMobileCloseBtnClass={navMobileCloseBtnClass} headerDarkBackgroundClass={headerDarkBackgroundClass}
+              headerDarkOverlay={headerDarkOverlay}
               setIsMobileNavOpen={setIsMobileNavOpen}
               onSearch={handleSearchCards}
               setIsSignInPopupOpen={setIsSignInPopupOpen}
@@ -188,6 +188,7 @@ function App() {
               navBackgroundTypeClass={navBackgroundTypeClass}
               mobileNavTypeClass={mobileNavTypeClass}
               mobileLinkTypeClass={mobileLinkTypeClass}
+              navMobileBtnClass={navMobileBtnClass}
             />
           } />
           <Route path='/signin' element={<>
@@ -197,7 +198,8 @@ function App() {
               handleLoggedIn={handleLoggedIn}
               setIsMobileNavOpen={setIsMobileNavOpen}
               navMenuOpenClass={navMenuOpenClass}
-              navChangeBackground={navChangeBackground} navMobileCloseBtnClass={navMobileCloseBtnClass} headerDarkBackgroundClass={headerDarkBackgroundClass}
+              // navChangeBackground={navChangeBackground}
+              headerDarkOverlay={headerDarkOverlay}
               setIsMobileNavOpen={setIsMobileNavOpen}
               onSearch={handleSearchCards}
               setIsSignInPopupOpen={setIsSignInPopupOpen}
@@ -209,6 +211,7 @@ function App() {
               navBackgroundTypeClass={navBackgroundTypeClass}
               mobileNavTypeClass={mobileNavTypeClass}
               mobileLinkTypeClass={mobileLinkTypeClass}
+              navMobileBtnClass={navMobileBtnClass}
             />
             <PopupWithForm
               isSignInPopupOpen={isSignInPopupOpen}
@@ -233,7 +236,7 @@ function App() {
               handleLoggedIn={handleLoggedIn}
               setIsMobileNavOpen={setIsMobileNavOpen}
               navMenuOpenClass={navMenuOpenClass}
-              navChangeBackground={navChangeBackground} navMobileCloseBtnClass={navMobileCloseBtnClass} headerDarkBackgroundClass={headerDarkBackgroundClass}
+              headerDarkOverlay={headerDarkOverlay}
               setIsMobileNavOpen={setIsMobileNavOpen}
               onSearch={handleSearchCards}
               setIsSignInPopupOpen={setIsSignInPopupOpen}
@@ -245,6 +248,7 @@ function App() {
               navBackgroundTypeClass={navBackgroundTypeClass}
               mobileNavTypeClass={mobileNavTypeClass}
               mobileLinkTypeClass={mobileLinkTypeClass}
+              navMobileBtnClass={navMobileBtnClass}
             />
             <PopupWithForm
               isSignInPopupOpen={isSignInPopupOpen}
@@ -267,7 +271,7 @@ function App() {
             currentUser={currentUser}
             isMobileNavOpen={isMobileNavOpen}
             setIsMobileNavOpen={setIsMobileNavOpen}
-            navMenuOpenClass={navMenuOpenClass} navMobileCloseBtnClass={navMobileCloseBtnClass}
+            navMenuOpenClass={navMenuOpenClass}
             setLoggedIn={setLoggedIn}
             setCurrentPage={setCurrentPage}
             currentPage={currentPage}
@@ -277,6 +281,7 @@ function App() {
             navBackgroundTypeClass={navBackgroundTypeClass}
             mobileNavTypeClass={mobileNavTypeClass}
             mobileLinkTypeClass={mobileLinkTypeClass}
+            navMobileBtnClass={navMobileBtnClass}
           />} />
         </Routes>
 
@@ -292,6 +297,7 @@ function App() {
           articles={articlesForDisplay}
           isSearchingCards={isSearchingCards}
           setIsSearchingCards={setIsSearchingCards}
+          currentPage={currentPage}
         />
         <Footer
         />

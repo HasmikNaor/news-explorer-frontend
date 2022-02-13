@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import './Navigation.css';
-import logout from '../../images/logout.svg';
+import logoutDark from '../../images/logout_dark.svg';
+import logoutBright from '../../images/logout_white.svg';
 import Mobilenavigation from '../MobileNavigation/MobileNavigation';
 
 function Navigation(props) {
@@ -12,8 +13,10 @@ function Navigation(props) {
   const navBackgroundTypeClass = props.navBackgroundTypeClass;
   const currentTypeClass = props.currentTypeClass;
 
+  const logoutImg = props.currentPage === 'home' ? logoutBright : logoutDark;
+
   // mobile navigation 
-  const onNavMenuClickHandler = () => {
+  const mobNavBtnhandler = () => {
     props.setIsMobileNavOpen((prevState) => !prevState);
   };
 
@@ -36,11 +39,14 @@ function Navigation(props) {
   };
 
   return (
-    <div className='nav-container'>
-      <nav className={`navigation ${navBackgroundTypeClass}`}>
+    <div className={`nav-container ${navBackgroundTypeClass}`}>
+      <nav className='navigation'>
         <div className="navigation__logo">NewsExplorer</div>
         <ul className="navigation__list">
-          <li className={`navigation__list-item ${currentPage === 'home' && currentTypeClass}`}>
+          <li
+            className={`navigation__list-item 
+          ${currentPage === 'home' && currentTypeClass}`
+            }>
             <Link
               className={`navigation__link 
             ${linkColorClass}`}
@@ -58,7 +64,10 @@ function Navigation(props) {
               Sign in
             </Link>
           </li>}
-          {loggedIn && <li className={`navigation__list-item ${currentPage === 'saved articles' && currentTypeClass}`}>
+          {loggedIn && <li
+            className={`navigation__list-item 
+          ${currentPage === 'saved articles' && currentTypeClass}`
+            }>
             <Link
               className={`navigation__link 
             ${linkColorClass}`}
@@ -68,15 +77,21 @@ function Navigation(props) {
               Saved articles
             </Link>
           </li>}
-          {loggedIn && <li className="navigation__list-item navigation__list-item_logout-btn">
-            <Link className={`navigation__link ${linkColorClass}`} to="/" onClick={logoutClickHandler}>
+          {loggedIn && <li
+            className="navigation__list-item navigation__list-item_logout-btn">
+            <Link
+              className={`navigation__link ${linkColorClass}`} to="/" onClick={logoutClickHandler}>
               <p className='navigation__user'>{currentUser.name}</p>
-              <img src={logout} />
+              <img src={logoutImg} alt='logout' />
             </Link>
           </li>}
         </ul>
-        {!loggedIn && <button type='button' className={`navigation__menu-btn ${props.navMobileCloseBtnClass}`} onClick={onNavMenuClickHandler} ></button>}
-        {loggedIn && <button type='button' className={`navigation__menu-btn navigation__menu-btn_loggedin ${props.navMobileCloseBtnClass}`} onClick={onNavMenuClickHandler}></button>}
+
+        <button type='button'
+          className={`navigation__mobile-btn ${props.navMobileBtnClass}`}
+          onClick={mobNavBtnhandler} >
+        </button>
+
       </nav>
       <Mobilenavigation
         {...props}

@@ -16,10 +16,7 @@ function Main(props) {
         setIsSearchingCards={props.setIsSearchingCards}
         foundArticles={foundArticles}
       />}
-      {foundArticles && <NewsCardList
-        articles={props.articles}
-        loggedIn={props.loggedIn}
-      />}
+      {foundArticles && <NewsCardList {...props} />}
       <About />
     </main>
   );

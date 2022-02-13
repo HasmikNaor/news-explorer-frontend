@@ -60,7 +60,7 @@
   .header__content {
     padding:86px 16px 32px;
   }
-  .header__dark-background::after {
+  .header_dark-overlay::after {
   content:'';
   background-color:rgb(15, 15, 15);
   opacity:0.3;

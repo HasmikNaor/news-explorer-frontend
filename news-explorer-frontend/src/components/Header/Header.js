@@ -2,8 +2,9 @@ import Navigation from '../Navigation/Navigation';
 import SearchForm from '../SearchForm/SearchForm';
 
 function Header(props) {
+  console.log(props.headerDarkOverlay);
   return (
-    <header className={`header ${props.headerDarkBackgroundClass}`}>
+    <header className={`header ${props.headerDarkOverlay}`}>
       <Navigation {...props} />
       <div className='header__content'>
         <div className='header__description'>

@@ -206,9 +206,9 @@ function PopupWithForm(props) {
         </button>
 
         <form onSubmit={handleFormSubmit} className="popup__form">
-          <h1 className='popup__title'>
+          <h2 className='popup__title'>
             {isSignInPopupOpen ? 'Sign in' : 'Sign up'}
-          </h1>
+          </h2>
           <label htmlFor='email' className='popup__label'>email</label>
           <input
             id="email"
