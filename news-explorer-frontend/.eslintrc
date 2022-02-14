@@ -1,0 +1,12 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "prefer-destructuring": "off",
+    "max-len": "off",
+    "no-underscore-dangle": "off",
+    "no-useless-escape": "off",
+    "brace-style": "off",
+    "operator-linebreak": "off",
+    "no-trailing-spaces": "off",
+  }
+}
