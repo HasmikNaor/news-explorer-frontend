@@ -104,7 +104,6 @@ function App() {
       setNavMobileBtnClass('navigation__mobile-btn_close_bright');
       setHeaderDarkOverlay('header_dark-overlay');
     }
-    console.log(headerDarkOverlay);
 
     if (isMobileNavOpen && path === '/saved-news') {
       setNavBackgroundTypeClass('nav-container_theme_bright');
@@ -136,7 +135,7 @@ function App() {
       mobileNavStyleHandler();
     }
   };
-  // when the user refreshes the page, the page returns to the home page.
+
   useEffect(() => {
     navStyleHandler();
   }, [isMobileNavOpen]);

@@ -7,7 +7,6 @@ function Mobilenavigation(props) {
   const loggedIn = props.loggedIn;
   const currentUser = props.currentUser;
   const logoutImg = props.currentPage === 'home' ? logoutBright : logoutDark;
-  console.log(props.currentPage === 'home');
   const handleSigninBtnClick = () => {
     props.handleSignin();
     props.setIsMobileNavOpen(false);
