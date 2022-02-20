@@ -1,11 +1,13 @@
 import './MobileNavigation.css';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logoutDark from '../../images/logout_dark.svg';
 import logoutBright from '../../images/logout_white.svg';
+import currentUser from '../../contexts/CurrentUserContext';
 
 function Mobilenavigation(props) {
   const loggedIn = props.loggedIn;
-  const currentUser = props.currentUser;
+  const user = useContext(currentUser);
   const logoutImg = props.currentPage === 'home' ? logoutBright : logoutDark;
   const handleSigninBtnClick = () => {
     props.handleSignin();
@@ -35,7 +37,7 @@ function Mobilenavigation(props) {
         </li>}
         {loggedIn && <li className="mobile-navigation__list-item mobile-navigation__list-item_logout-btn">
           <Link className={`mobile-navigation__link mobile-navigation__link_logout-btn ${props.mobileLinkTypeClass}`} to="/" onClick={logoutClickHandler}>
-            <p className='mobile-navigation__user'>{currentUser.name}</p>
+            <p className='mobile-navigation__user'>{user.name}</p>
             <img src={logoutImg} alt='logout' />
           </Link>
         </li>}

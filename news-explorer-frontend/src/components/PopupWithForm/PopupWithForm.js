@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import closebtn from '../../images/close.svg';
+import { authorize, register } from '../../utils/auth';
 import './PopupWithForm.css';
 
 function PopupWithForm(props) {
   const isSignInPopupOpen = props.isSignInPopupOpen;
   const isRegisterPopupOpen = props.isRegisterPopupOpen;
-  // const popupOpen = props.popupOpenClass;
   const formIsOpen = (isSignInPopupOpen || isRegisterPopupOpen) ? 'popup_open' : '';
   const users = props.users;
   const [SubmitButtonClass, setSubmitButtonClass] = useState('popup__submit-btn_disabled');
@@ -27,6 +27,10 @@ function PopupWithForm(props) {
     value: '',
     error: '',
     isValid: false,
+  });
+  const [formErrorMessage, setFormErrorMessage] = useState({
+    message: '',
+    formName: '',
   });
 
   const signinFormValid = emailInputfield.isValid && passwordInputfield.isValid;
@@ -66,10 +70,27 @@ function PopupWithForm(props) {
       return;
     }
 
-    props.handleLoggedIn();
+    authorize(email, password)
+      .then((data) => {
+        console.log(data);
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          props.setToken(data.token);
+          props.handleLoggedIn(); // updates the state inside App.js
+          // props.setCurrentUser({ name })
+          props.onClosePopup();
+          navigate('/saved-news');
+        }
+      })
+      .catch((err) => {
+        setFormErrorMessage({
+          message: 'This email is not availatble',
+          formName: 'sign in',
+        });
+        console.log(err);
+      });
+
     props.navStyleHandler();
-    props.onClosePopup();
-    navigate('/saved-news');
   };
 
   const handleSignUpSubmit = (email, password, username) => {
@@ -83,11 +104,24 @@ function PopupWithForm(props) {
       email: emailInputfield.value,
     };
 
+    register(email, password, username)
+      .then((data) => {
+        console.log(data);
+        props.setFeedbackPopupOpenClass('info-popup_open');
+        props.setIsInfoTooltipOpen(true);
+        props.onClosePopup();
+        // props.setIsSuccessOpen(true);
+      })
+      .catch((err) => {
+        setFormErrorMessage({
+          message: 'This email already have used.choose another one',
+          formName: 'sign up',
+        });
+        console.log(err);
+      });
+
     users.push(newUser);
-    props.setUsersCollection(users);
-    props.onClosePopup();
-    props.setFeedbackPopupOpenClass('info-popup_open');
-    props.setIsInfoTooltipOpen(true);
+    // props.setUsersCollection(users);
   };
 
   const handleFormSubmit = (e) => {
@@ -193,70 +227,76 @@ function PopupWithForm(props) {
   const handleChange = (e) => {
     const field = e.target.name;
     const value = e.target.value;
-
+    setFormErrorMessage('');
     handleValidation(field, value);
   };
 
   return (
-    <div className={`popup ${formIsOpen}`} onClick={handleClickOnOverlayClose} tabIndex="0">
-      <div className="popup__content" onClick={(e) => e.stopPropagation()}>
+    <div className={`popup ${formIsOpen}`} onClick={handleClickOnOverlayClose} tabIndex='0'>
+      <div className='popup__content' onClick={(e) => e.stopPropagation()}>
 
         <button className={`popup__close-btn popup__close-btn_${props.name}`} onClick={close}>
-          <img src={closebtn} alt="close-btn" className="popup__close-btn-img" />
+          <img src={closebtn} alt='close-btn' className='popup__close-btn-img' />
         </button>
 
-        <form onSubmit={handleFormSubmit} className="popup__form">
+        <form onSubmit={handleFormSubmit} className='popup__form'>
           <h2 className='popup__title'>
             {isSignInPopupOpen ? 'Sign in' : 'Sign up'}
           </h2>
           <label htmlFor='email' className='popup__label'>email</label>
           <input
-            id="email"
+            id='email'
             required
-            name="email"
-            type="email"
+            name='email'
+            type='email'
             placeholder='Enter Email'
-            className="popup__input"
+            className='popup__input'
             value={emailInputfield.value || ''}
             onChange={handleChange}
           />
           <span className='popup__error popup__error_visible'>{emailInputfield.error}</span>
           <label htmlFor='password' className='popup__label'>password</label>
           <input
-            id="password"
+            id='password'
             required
-            name="password"
-            type="password"
-            placeholder="Enter password"
-            className="popup__input"
-            minLength="2"
+            name='password'
+            type='password'
+            placeholder='Enter password'
+            className='popup__input'
+            minLength='2'
             value={passwordInputfield.value || ''}
             onChange={handleChange}
           />
-          <span className='popup__error_visible'>{passwordInputfield.error}</span>
+          <span className='popup__error popup__error_visible'>{passwordInputfield.error}</span>
           {isRegisterPopupOpen &&
             <>
               <label htmlFor='name' className='popup__label'>name</label>
               <input
-                id="name"
+                id='name'
                 required
-                name="name"
-                type="text"
-                placeholder="Enter your username"
-                className="popup__input"
-                minLength="2"
+                name='name'
+                type='text'
+                placeholder='Enter your username'
+                className='popup__input'
+                minLength='2'
                 value={nameInputfield.value || ''}
                 onChange={handleChange}
               />
               <span className='popup__error_visible'>{nameInputfield.error}</span>
             </>}
-          <div className="popup__btns-container">
-            <button type="submit" className={`popup__submit-btn ${SubmitButtonClass}`} >
+          <div className='popup__btns-container'>
+            {!isSignInPopupOpen && <span className='popup__error popup__error_visible'>
+              {formErrorMessage.formName === 'sign up' && formErrorMessage.message}
+            </span>}
+            {isSignInPopupOpen && <span className='popup__error popup__error_visible'>
+              {formErrorMessage.formName === 'sign in' && formErrorMessage.message}
+            </span>}
+            <button type='submit' className={`popup__submit-btn ${SubmitButtonClass}`} >
               {isSignInPopupOpen ? 'Sign in' : 'Sign up'}
             </button>
             <div className='popup__link-container'>
               <p className='popup__link-side-text'>or</p>
-              <Link to={isSignInPopupOpen ? '/signup' : '/signin'} className="popup__link" onClick={switchModelHandler}>
+              <Link to={isSignInPopupOpen ? '/signup' : '/signin'} className='popup__link' onClick={switchModelHandler}>
                 {isSignInPopupOpen ? 'Sign up' : 'Sign in'}
               </Link>
             </div>

@@ -123,7 +123,7 @@
   text-align: start;
   margin:0;
 }
-.articles__signin-btn {
+.articles__save-btn {
   position:absolute;
   top: 4.21%;
   right: 6%;
@@ -137,10 +137,12 @@
   cursor: pointer;
 }
 
-.articles__signin-btn_saved {
+
+.articles__save-btn_clicked{
   background:url(../../images/signin-bold.svg)no-repeat center center;
+  background-color: #FFFFFF;
 }
-.articles__signin_img {
+.articles__save_img {
   max-width:14px
 }
 

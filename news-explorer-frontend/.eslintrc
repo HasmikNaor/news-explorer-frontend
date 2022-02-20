@@ -8,5 +8,12 @@
     "brace-style": "off",
     "operator-linebreak": "off",
     "no-trailing-spaces": "off",
+    "arrow-body-style": "off",
+    "no-undef": "off",
+    "class-methods-use-this": "off",
+    "no-shadow": "off",
+    "no-unused-expressions": "off",
+    "no-plusplus": "off",
+    "no-restricted-syntax": "off",
   }
 }

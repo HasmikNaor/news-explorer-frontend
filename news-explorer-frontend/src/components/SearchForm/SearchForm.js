@@ -6,6 +6,7 @@ function SearchForm(props) {
 
   const handleSearch = (e) => {
     const keyword = keywordInput.current.value;
+    props.setShowPreloaderClass('');
     props.onSearch(keyword);
 
     e.preventDefault();

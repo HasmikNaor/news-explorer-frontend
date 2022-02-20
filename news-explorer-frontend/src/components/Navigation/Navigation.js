@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import './Navigation.css';
 import logoutDark from '../../images/logout_dark.svg';
 import logoutBright from '../../images/logout_white.svg';
 import Mobilenavigation from '../MobileNavigation/MobileNavigation';
+import currentUser from '../../contexts/CurrentUserContext';
 
 function Navigation(props) {
   const loggedIn = props.loggedIn;
-  const currentUser = props.currentUser;
   const currentPage = props.currentPage;
   const linkColorClass = props.linkColorClass;
   const navBackgroundTypeClass = props.navBackgroundTypeClass;
   const currentTypeClass = props.currentTypeClass;
+  const user = useContext(currentUser);
 
   const logoutImg = props.currentPage === 'home' ? logoutBright : logoutDark;
 
@@ -32,6 +33,8 @@ function Navigation(props) {
   const logoutClickHandler = () => {
     props.handleLoggedIn();
     props.navStyleHandler();
+    localStorage.removeItem('token');
+    props.setToken(localStorage.getItem('token'));
   };
 
   const handleSigninBtnClick = () => {
@@ -81,7 +84,7 @@ function Navigation(props) {
             className="navigation__list-item navigation__list-item_logout-btn">
             <Link
               className={`navigation__link ${linkColorClass}`} to="/" onClick={logoutClickHandler}>
-              <p className='navigation__user'>{currentUser.name}</p>
+              <p className='navigation__user'>{user.name}</p>
               <img src={logoutImg} alt='logout' />
             </Link>
           </li>}
