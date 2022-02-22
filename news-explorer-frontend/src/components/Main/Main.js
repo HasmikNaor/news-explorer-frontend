@@ -12,7 +12,7 @@ function Main(props) {
       {showPreloader && currentPage === 'home' && <Preloader {...props} />}
 
       {currentPage === 'home' && <NewsCardList {...props} />}
-      {currentPage === 'saved articles' && <SavedNews {...props} />}
+      {currentPage === 'saved articles' && props.savedArticles.length > 0 && <SavedNews {...props} />}
 
       {currentPage === 'home' && <About />}
     </main>

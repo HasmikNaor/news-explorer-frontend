@@ -1,6 +1,4 @@
-const _checkResponse = (res) => {
-  return res.ok ? res.json() : Promise.reject(res.statusText);
-};
+import { checkResponse } from './auth';
 
 const _todayCalculation = () => {
   let today = new Date();
@@ -36,7 +34,7 @@ const getArticles = (keyword) => {
       },
     },
   )
-    .then((res) => _checkResponse(res));
+    .then((res) => checkResponse(res));
 };
 
 export default getArticles;

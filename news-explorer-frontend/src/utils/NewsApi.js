@@ -1,6 +1,4 @@
-const _checkResponse = (res) => {
-  return res.ok ? res.json() : Promise.reject(res.statusText);
-};
+import { checkResponse } from './auth';
 
 const _todayCalculation = () => {
   let today = new Date();
@@ -28,7 +26,7 @@ const getArticles = (keyword) => {
   const daysBefore = _daysBeforeCalculation();
 
   return fetch(
-    `https://nomoreparties.co/news/v2/everything?q=${keyword}&from=${daysBefore}&to=${today}&pageSize=${pageSize}&apiKey=7179a03434c1498d9844463a459ac5ed`,
+    `https://newsapi.org/v2/everything?q=${keyword}&from=${daysBefore}&to=${today}&pageSize=${pageSize}&apiKey=7179a03434c1498d9844463a459ac5ed`,
     {
       method: 'GET',
       headers: {
@@ -36,7 +34,7 @@ const getArticles = (keyword) => {
       },
     },
   )
-    .then((res) => _checkResponse(res));
+    .then((res) => checkResponse(res));
 };
 
 export default getArticles;

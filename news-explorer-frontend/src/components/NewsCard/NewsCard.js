@@ -14,7 +14,7 @@ function NewCard(props) {
   const key = props.index || props.id;
   const user = useContext(currentUser);
 
-  const homeCardDateModifier = (publishedAt) => {
+  const modifyDateType = (publishedAt) => {
     let date = new Date(publishedAt.toString());
     const month = date.toLocaleString('en-us', { month: 'long' });
     const day = date.getDate();
@@ -27,7 +27,7 @@ function NewCard(props) {
     let articleData;
     if (currentPage === 'home') {
       articleData = props.article;
-      const date = homeCardDateModifier(articleData.publishedAt);
+      const date = modifyDateType(articleData.publishedAt);
       setData({
         source: articleData.source.name,
         image: articleData.urlToImage,

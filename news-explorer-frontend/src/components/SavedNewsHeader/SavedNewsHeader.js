@@ -26,8 +26,7 @@ function SavedNewsHeader(props) {
         <h2 className='loggedin-header__title'>Saved articles</h2>
         <p className='loggedin-header__info'>{user.name}, you have {sum} saved articles</p>
         {length > 2 && <p className='loggedin-header__keywords-container'>By keywords
-          <span className='loggedin-header__keywords'> {arrayOfKeywords[0][0]}, {arrayOfKeywords[1][0]}
-            {length > 3 ? ` and ${length - 2} other` : arrayOfKeywords[2][0]}
+          <span className='loggedin-header__keywords'> {arrayOfKeywords[0][0]}, {arrayOfKeywords[1][0]}{length > 3 ? ` and ${length - 2} other` : `, ${arrayOfKeywords[2][0]}`}
           </span>
         </p>}
       </div>

@@ -7,7 +7,6 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { getContent } from '../../utils/auth';
-import users from '../../data/users';
 import { api } from '../../utils/api';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -15,14 +14,14 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
 import Header from '../Header/Header';
-import PopupWithForm from '../PopupWithForm/PopupWithForm';
+import Register from '../Register/Register';
+import Login from '../Login/Login';
 import getArticles from '../../utils/MainApi';
 import CurrentUser from '../../contexts/CurrentUserContext';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const [usersCollection, setUsersCollection] = useState([users]);
   const [isSearchingCards, setIsSearchingCards] = useState(false);
   const [currentPage, setCurrentPage] = useState('');
   const [articles, setArticles] = useState([]);
@@ -50,6 +49,7 @@ function App() {
   const [keyword, setKeyword] = useState('');
   const [keywordsList, setKeywordsList] = useState({});
   const [arrayOfKeywords, setArrayOfKeywords] = useState([]);
+
   const navigate = useNavigate();
   const path = location.pathname;
 
@@ -58,7 +58,7 @@ function App() {
     setArrayOfKeywords(highestToLowest);
   };
 
-  const handleKeywordsList = () => {
+  const createKeywordsList = () => {
     let keywords = {};
     savedArticles.forEach((article) => {
       const newKeyword = {};
@@ -74,7 +74,7 @@ function App() {
   };
 
   useEffect(() => {
-    handleKeywordsList(savedArticles);
+    createKeywordsList(savedArticles);
   }, [savedArticles]);
 
   useEffect(() => {
@@ -119,13 +119,13 @@ function App() {
         .catch((error) => console.log(error));
       api.getInitialArticles()
         .then((res) => {
-          // console.log('test', res);
           setSavedArticles(res);
-        });
+        })
+        .catch((error) => console.log(error));
     }
   }, [loggedIn]);
 
-  const mobileNavStyleHandler = () => {
+  const styleMobileNav = () => {
     if (isMobileNavOpen && path === '/') {
       setNavBackgroundTypeClass('nav-container_theme_dark');
       setMobileLinkTypeClass('mobile-navigation__link_type_bright');
@@ -140,7 +140,7 @@ function App() {
     }
   };
 
-  const navStyleHandler = () => {
+  const styleNavbar = () => {
     if (path === '/') {
       setCurrentTypeClass('navigation__list-item_bright-border');
       setLinkColorClass('');
@@ -150,7 +150,7 @@ function App() {
       setNavMobileBtnClass('navigation__mobile-btn_menu_bright');
       setHeaderDarkOverlay('');
 
-      mobileNavStyleHandler();
+      styleMobileNav();
     }
     if (path === '/saved-news') {
       setCurrentTypeClass('navigation__list-item_dark-border');
@@ -160,12 +160,12 @@ function App() {
       setMobileNavTypeClass('mobile-navigation_theme_bright');
       setNavMobileBtnClass('navigation__mobile-btn_menu_dark');
 
-      mobileNavStyleHandler();
+      styleMobileNav();
     }
   };
 
   useEffect(() => {
-    navStyleHandler();
+    styleNavbar();
   }, [isMobileNavOpen]);
 
   const closePopup = () => {
@@ -198,7 +198,7 @@ function App() {
       });
   };
 
-  const SaveArticleHandler = (data) => {
+  const saveArticle = (data) => {
     if (loggedIn) {
       api.saveArticle(data)
         .then((article) => {
@@ -209,23 +209,22 @@ function App() {
     }
   };
 
-  const articleDeleteHandler = (article) => {
+  const deleteArticle = (article) => {
     api.deleteArticle(article._id)
       .then(() => {
         setSavedArticles((articles) => articles.filter((art) => art._id !== article._id));
-        // subtractFromKeywords(article.keyword);
       })
       .catch((err) => console.log(err));
   };
 
   const removeMarkup = (data) => {
-    // const articleId = savedArticles.find((article) => article.link === data.link)._id;
     const article = savedArticles.find((article) => article.link === data.link);
 
     if (article) {
-      articleDeleteHandler(article);
+      deleteArticle(article);
     }
   };
+
   return (
     <CurrentUser.Provider value={currentUser}>
       <div className='app'>
@@ -243,7 +242,7 @@ function App() {
                 setIsSignInPopupOpen={setIsSignInPopupOpen}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                navStyleHandler={navStyleHandler}
+                styleNavbar={styleNavbar}
                 linkColorClass={linkColorClass}
                 currentTypeClass={currentTypeClass}
                 navBackgroundTypeClass={navBackgroundTypeClass}
@@ -267,7 +266,7 @@ function App() {
                 setIsSignInPopupOpen={setIsSignInPopupOpen}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                navStyleHandler={navStyleHandler}
+                styleNavbar={styleNavbar}
                 linkColorClass={linkColorClass}
                 currentTypeClass={currentTypeClass}
                 navBackgroundTypeClass={navBackgroundTypeClass}
@@ -278,21 +277,19 @@ function App() {
                 setShowPreloaderClass={setShowPreloaderClass}
                 arrayOfKeywords={arrayOfKeywords}
               />
-              <PopupWithForm
-                isSignInPopupOpen={isSignInPopupOpen}
-                setIsSignInPopupOpen={setIsSignInPopupOpen}
-                isRegisterPopupOpen={isRegisterPopupOpen}
-                setIsRegisterPopupOpen={setIsRegisterPopupOpen}
+              <Login
+                isOpen={isSignInPopupOpen}
+                setIsOpen={setIsSignInPopupOpen}
                 onClosePopup={closePopup}
                 handleLoggedIn={handleLoggedIn}
-                users={usersCollection}
-                setUsersCollection={setUsersCollection}
                 setIsInfoTooltipOpen={setIsInfoTooltipOpen}
                 feedbackPopupOpenClass={feedbackPopupOpenClass}
                 setFeedbackPopupOpenClass={setFeedbackPopupOpenClass}
-                navStyleHandler={navStyleHandler}
+                styleNavbar={styleNavbar}
                 setToken={setToken}
                 setCurrentUser={setCurrentUser}
+                setIsRegisterPopupOpen={setIsRegisterPopupOpen}
+                setIsSignInPopupOpen={setIsSignInPopupOpen}
               />
             </>} />
             <Route path='/signup' element={<>
@@ -307,7 +304,7 @@ function App() {
                 setIsSignInPopupOpen={setIsSignInPopupOpen}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                navStyleHandler={navStyleHandler}
+                styleNavbar={styleNavbar}
                 linkColorClass={linkColorClass}
                 currentTypeClass={currentTypeClass}
                 navBackgroundTypeClass={navBackgroundTypeClass}
@@ -318,21 +315,19 @@ function App() {
                 setShowPreloaderClass={setShowPreloaderClass}
                 arrayOfKeywords={arrayOfKeywords}
               />
-              <PopupWithForm
-                isSignInPopupOpen={isSignInPopupOpen}
-                setIsSignInPopupOpen={setIsSignInPopupOpen}
-                isRegisterPopupOpen={isRegisterPopupOpen}
-                setIsRegisterPopupOpen={setIsRegisterPopupOpen}
+              <Register
+                isOpen={isRegisterPopupOpen}
+                setIsOpen={setIsRegisterPopupOpen}
                 onClosePopup={closePopup}
                 handleLoggedIn={handleLoggedIn}
-                users={usersCollection}
-                setUsersCollection={setUsersCollection}
                 setIsInfoTooltipOpen={setIsInfoTooltipOpen}
                 feedbackPopupOpenClass={feedbackPopupOpenClass}
                 setFeedbackPopupOpenClass={setFeedbackPopupOpenClass}
-                navStyleHandler={navStyleHandler}
+                styleNavbar={styleNavbar}
                 setToken={setToken}
                 setCurrentUser={setCurrentUser}
+                setIsSignInPopupOpen={setIsSignInPopupOpen}
+                setIsRegisterPopupOpen={setIsRegisterPopupOpen}
               />
             </>} />
             <Route path='/saved-news' element={
@@ -348,7 +343,7 @@ function App() {
                 setLoggedIn={setLoggedIn}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
-                navStyleHandler={navStyleHandler}
+                styleNavbar={styleNavbar}
                 linkColorClass={linkColorClass}
                 currentTypeClass={currentTypeClass}
                 navBackgroundTypeClass={navBackgroundTypeClass}
@@ -377,9 +372,9 @@ function App() {
             isSearchingCards={isSearchingCards}
             setIsSearchingCards={setIsSearchingCards}
             currentPage={currentPage}
-            onSaveArticle={SaveArticleHandler}
+            onSaveArticle={saveArticle}
             currentUser={currentUser}
-            onArticleDelete={articleDeleteHandler}
+            onArticleDelete={deleteArticle}
             onRemoveMarkup={removeMarkup}
             showPreloaderClass={showPreloaderClass}
           />

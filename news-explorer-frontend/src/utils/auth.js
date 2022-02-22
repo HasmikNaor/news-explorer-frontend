@@ -1,7 +1,6 @@
 export const BASE_URL = 'https://api.explorer.students.nomoreparties.sbs';
-// export const BASE_URL = 'http://localhost:3000';
 
-const _checkResponse = (res) => {
+export const checkResponse = (res) => {
   return res.ok ? res.json() : Promise.reject(res.statusText);
 };
 
@@ -16,7 +15,7 @@ export const register = (email, password, name) => {
       },
     },
   )
-    .then((res) => _checkResponse(res));
+    .then((res) => checkResponse(res));
 };
 
 export const authorize = (email, password) => {
@@ -30,7 +29,7 @@ export const authorize = (email, password) => {
       },
     },
   )
-    .then((res) => _checkResponse(res));
+    .then((res) => checkResponse(res));
 };
 
 export const getContent = (token) => {
@@ -44,5 +43,5 @@ export const getContent = (token) => {
       },
     },
   )
-    .then((res) => _checkResponse(res));
+    .then((res) => checkResponse(res));
 };

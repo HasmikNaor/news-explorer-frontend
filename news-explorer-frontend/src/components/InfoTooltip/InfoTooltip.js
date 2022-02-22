@@ -4,7 +4,6 @@ import './InfoTooltip.css';
 
 function InfoTooltip(props) {
   const isOpen = props.feedbackPopupOpenClass;
-  // const navigate = useNavigate();
 
   const handleLinkClick = () => {
     props.onClose();
@@ -14,13 +13,11 @@ function InfoTooltip(props) {
 
   const close = () => {
     props.onClose();
-    // navigate('/');
   };
 
   const handleClickOnOverlayClose = () => {
     close();
     props.setFeedbackPopupOpenClass('');
-    // navigate('/');
   };
 
   return (

@@ -22,17 +22,17 @@ function Navigation(props) {
   };
 
   useEffect(() => {
-    props.navStyleHandler();
+    props.styleNavbar();
   }, []);
 
   const currentPageHandler = (e) => {
     props.setCurrentPage(e.target.name);
-    props.navStyleHandler();
+    props.styleNavbar();
   };
 
-  const logoutClickHandler = () => {
+  const handleLogoutClick = () => {
     props.handleLoggedIn();
-    props.navStyleHandler();
+    props.styleNavbar();
     localStorage.removeItem('token');
     props.setToken(localStorage.getItem('token'));
   };
@@ -83,7 +83,7 @@ function Navigation(props) {
           {loggedIn && <li
             className="navigation__list-item navigation__list-item_logout-btn">
             <Link
-              className={`navigation__link ${linkColorClass}`} to="/" onClick={logoutClickHandler}>
+              className={`navigation__link ${linkColorClass}`} to="/" onClick={handleLogoutClick}>
               <p className='navigation__user'>{user.name}</p>
               <img src={logoutImg} alt='logout' />
             </Link>
@@ -98,8 +98,8 @@ function Navigation(props) {
       </nav>
       <Mobilenavigation
         {...props}
-        handleSignin={handleSigninBtnClick}
-        logoutClickHandler={logoutClickHandler}
+        onSignin={handleSigninBtnClick}
+        onLogout={handleLogoutClick}
       />
     </div>
   );

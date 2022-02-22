@@ -10,12 +10,12 @@ function Mobilenavigation(props) {
   const user = useContext(currentUser);
   const logoutImg = props.currentPage === 'home' ? logoutBright : logoutDark;
   const handleSigninBtnClick = () => {
-    props.handleSignin();
+    props.onSignin();
     props.setIsMobileNavOpen(false);
   };
 
-  const logoutClickHandler = () => {
-    props.logoutClickHandler();
+  const handleLogoutClick = () => {
+    props.onLogout();
   };
   return (
     <nav
@@ -36,7 +36,7 @@ function Mobilenavigation(props) {
           <Link className={`mobile-navigation__link ${props.mobileLinkTypeClass}`} to="/saved-news">Saved articles</Link>
         </li>}
         {loggedIn && <li className="mobile-navigation__list-item mobile-navigation__list-item_logout-btn">
-          <Link className={`mobile-navigation__link mobile-navigation__link_logout-btn ${props.mobileLinkTypeClass}`} to="/" onClick={logoutClickHandler}>
+          <Link className={`mobile-navigation__link mobile-navigation__link_logout-btn ${props.mobileLinkTypeClass}`} to="/" onClick={handleLogoutClick}>
             <p className='mobile-navigation__user'>{user.name}</p>
             <img src={logoutImg} alt='logout' />
           </Link>
