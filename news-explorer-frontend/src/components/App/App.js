@@ -74,7 +74,11 @@ function App() {
   };
 
   useEffect(() => {
-    setArticles(JSON.parse(localStorage.getItem('articles')));
+    const articles = localStorage.getItem('articles');
+    console.log('test');
+    if (articles !== null) {
+      setArticles(JSON.parse(articles));
+    }
   }, []);
 
   useEffect(() => {
