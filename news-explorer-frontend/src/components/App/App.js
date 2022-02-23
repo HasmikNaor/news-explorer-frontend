@@ -11,13 +11,13 @@ import { api } from '../../utils/api';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
 import Header from '../Header/Header';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import getArticles from '../../utils/MainApi';
 import CurrentUser from '../../contexts/CurrentUserContext';
+import SavedNewsPage from '../SavedNewsMain/SavedNewsPage';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -74,6 +74,10 @@ function App() {
   };
 
   useEffect(() => {
+    setArticles(JSON.parse(localStorage.getItem('articles')));
+  }, []);
+
+  useEffect(() => {
     createKeywordsList(savedArticles);
   }, [savedArticles]);
 
@@ -103,7 +107,7 @@ function App() {
   // when they return, everything will appear right where they left it
 
   useEffect(() => {
-    api._headers = { authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+    api.updateHeaders(token);
     tokenCheck(token);
   }, [token]);
 
@@ -142,21 +146,21 @@ function App() {
 
   const styleNavbar = () => {
     if (path === '/') {
+      setCurrentPage('home');
       setCurrentTypeClass('navigation__list-item_bright-border');
       setLinkColorClass('');
       setNavBackgroundTypeClass('');
-      setCurrentPage('home');
       setMobileNavTypeClass('mobile-navigation_theme_dark');
       setNavMobileBtnClass('navigation__mobile-btn_menu_bright');
       setHeaderDarkOverlay('');
 
       styleMobileNav();
     }
-    if (path === '/saved-news') {
+    if (path === '/saved-news' && loggedIn) {
+      setCurrentPage('saved articles');
       setCurrentTypeClass('navigation__list-item_dark-border');
       setLinkColorClass('navigation__link_type_dark');
       setNavBackgroundTypeClass('navigation_theme_bright');
-      setCurrentPage('saved articles');
       setMobileNavTypeClass('mobile-navigation_theme_bright');
       setNavMobileBtnClass('navigation__mobile-btn_menu_dark');
 
@@ -164,9 +168,32 @@ function App() {
     }
   };
 
+  const showPopup = () => {
+    if (path === '/signin') {
+      setIsSignInPopupOpen(true);
+    }
+    if (path === '/signup') {
+      setIsRegisterPopupOpen(true);
+    }
+  };
+
+  const changeCurrentPage = () => {
+    if (path === '/') {
+      setCurrentPage('home');
+    }
+    if (path === '/saved-news') {
+      setCurrentPage('saved articles');
+    }
+  };
+
+  useEffect(() => {
+    showPopup();
+    changeCurrentPage();
+  }, [path]);
+
   useEffect(() => {
     styleNavbar();
-  }, [isMobileNavOpen]);
+  }, [isMobileNavOpen, currentPage]);
 
   const closePopup = () => {
     setIsSignInPopupOpen(false);
@@ -183,6 +210,7 @@ function App() {
     getArticles(keyword)
       .then((res) => {
         setArticles(res.articles);
+        localStorage.setItem('articles', JSON.stringify(res.articles));
         if (res.articles.length) {
           setFoundArticles(true);
           setShowPreloaderClass('');
@@ -252,6 +280,8 @@ function App() {
                 setToken={setToken}
                 setShowPreloaderClass={setShowPreloaderClass}
                 arrayOfKeywords={arrayOfKeywords}
+                keyword={keyword}
+                setKeyword={setKeyword}
               />
             } />
             <Route path='/signin' element={<>
@@ -276,6 +306,8 @@ function App() {
                 setToken={setToken}
                 setShowPreloaderClass={setShowPreloaderClass}
                 arrayOfKeywords={arrayOfKeywords}
+                keyword={keyword}
+                setKeyword={setKeyword}
               />
               <Login
                 isOpen={isSignInPopupOpen}
@@ -314,6 +346,8 @@ function App() {
                 setToken={setToken}
                 setShowPreloaderClass={setShowPreloaderClass}
                 arrayOfKeywords={arrayOfKeywords}
+                keyword={keyword}
+                setKeyword={setKeyword}
               />
               <Register
                 isOpen={isRegisterPopupOpen}
@@ -332,10 +366,10 @@ function App() {
             </>} />
             <Route path='/saved-news' element={
               <ProtectedRoute
-                component={SavedNewsHeader}
-                arrayOfKeywords={arrayOfKeywords}
+                component={SavedNewsPage}
                 loggedIn={loggedIn}
                 handleLoggedIn={handleLoggedIn}
+                arrayOfKeywords={arrayOfKeywords}
                 currentUser={currentUser}
                 isMobileNavOpen={isMobileNavOpen}
                 setIsMobileNavOpen={setIsMobileNavOpen}
@@ -351,7 +385,9 @@ function App() {
                 mobileLinkTypeClass={mobileLinkTypeClass}
                 navMobileBtnClass={navMobileBtnClass}
                 setToken={setToken}
+                savedArticles={savedArticles}
                 setShowPreloaderClass={setShowPreloaderClass}
+                onArticleDelete={deleteArticle}
               />} />
           </Routes>
 

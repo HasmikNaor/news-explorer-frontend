@@ -36,6 +36,7 @@ function SavedNews(props) {
             id={article._id}
             key={article._id}
             {...props}
+            calledFrom='saved articles'
           />
         ))}
         </div>

@@ -6,7 +6,6 @@ import './PopupWithForm.css';
 function PopupWithForm(props) {
   const [submitButtonClass, setSubmitButtonClass] = useState('popup__submit-btn_disabled');
   const formIsOpen = props.isOpen ? 'popup_open' : '';
-  console.log(props.isOpen);
 
   const navigate = useNavigate();
 

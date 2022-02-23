@@ -37,6 +37,10 @@ class Api {
       method: 'DELETE',
     });
   }
+
+  updateHeaders(token) {
+    this._headers = { authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  }
 }
 
 export const api = new Api({

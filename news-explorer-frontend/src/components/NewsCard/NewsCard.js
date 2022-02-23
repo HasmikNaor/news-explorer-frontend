@@ -1,5 +1,6 @@
 import './NewsCard.css';
 import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import currentUser from '../../contexts/CurrentUserContext';
 
 function NewCard(props) {
@@ -13,6 +14,7 @@ function NewCard(props) {
   const [data, setData] = useState({});
   const key = props.index || props.id;
   const user = useContext(currentUser);
+  const navigate = useNavigate();
 
   const modifyDateType = (publishedAt) => {
     let date = new Date(publishedAt.toString());
@@ -23,9 +25,10 @@ function NewCard(props) {
 
     return date;
   };
+  // this useEffect will run each time we search something 
   useEffect(() => {
     let articleData;
-    if (currentPage === 'home') {
+    if (props.calledFrom === 'home') {
       articleData = props.article;
       const date = modifyDateType(articleData.publishedAt);
       setData({
@@ -38,7 +41,7 @@ function NewCard(props) {
         keyword,
       });
     }
-    if (currentPage === 'saved articles') {
+    if (props.calledFrom === 'saved articles') {
       articleData = props.savedArticle;
       setData({ ...articleData });
     }
@@ -61,6 +64,9 @@ function NewCard(props) {
   }, [props.savedArticles.length, data]);
 
   const handleMarkArticleBtn = (e) => {
+    if (!loggedIn) {
+      navigate('/signup');
+    }
     const isMarked = e.target.classList.contains('articles__save-btn_clicked');
     if (isMarked) {
       props.onRemoveMarkup(data);

@@ -110,7 +110,7 @@ function Login(props) {
         console.log(err);
       });
 
-    props.styleNavbar();
+    // props.styleNavbar();
   };
 
   const SwitchFormModel = () => {

@@ -38,6 +38,7 @@ function NewsCardList(props) {
             article={article}
             index={index}
             key={index}
+            calledFrom='home'
           />
         ))}
         </div>

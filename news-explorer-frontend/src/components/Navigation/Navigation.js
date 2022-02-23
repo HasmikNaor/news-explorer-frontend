@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useContext } from 'react';
 import './Navigation.css';
 import logoutDark from '../../images/logout_dark.svg';
@@ -7,6 +7,7 @@ import Mobilenavigation from '../MobileNavigation/MobileNavigation';
 import currentUser from '../../contexts/CurrentUserContext';
 
 function Navigation(props) {
+  const navigate = useNavigate();
   const loggedIn = props.loggedIn;
   const currentPage = props.currentPage;
   const linkColorClass = props.linkColorClass;
@@ -27,7 +28,6 @@ function Navigation(props) {
 
   const currentPageHandler = (e) => {
     props.setCurrentPage(e.target.name);
-    props.styleNavbar();
   };
 
   const handleLogoutClick = () => {
@@ -35,6 +35,7 @@ function Navigation(props) {
     props.styleNavbar();
     localStorage.removeItem('token');
     props.setToken(localStorage.getItem('token'));
+    navigate('/');
   };
 
   const handleSigninBtnClick = () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 function ProtectedRoute({ component: Component, ...props }) {
-  const component = props.loggedIn ? <Component {...props} /> : <Navigate repalace to={'/'} />;
+  const component = props.loggedIn ? <Component {...props} /> : <Navigate repalace to={'/signin'} />;
   return (
     <Routes>
       <Route {...props} path='*' element={component} />

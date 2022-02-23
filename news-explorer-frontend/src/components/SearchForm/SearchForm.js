@@ -3,19 +3,19 @@ import { useRef } from 'react';
 
 function SearchForm(props) {
   const keywordInput = useRef();
+  let newKeyword;
 
   const handleSearch = (e) => {
-    const keyword = keywordInput.current.value;
+    newKeyword = keywordInput.current.value;
     props.setShowPreloaderClass('');
-    props.onSearch(keyword);
-
+    props.onSearch(newKeyword);
     e.preventDefault();
   };
 
   return (
-    <form className='header__form'>
+    <form className='header__form' onSubmit={handleSearch}>
       <input className='header__input' placeholder='Text not entered' ref={keywordInput} />
-      <button className='header__button' onClick={handleSearch}>Search</button>
+      <button className='header__button'>Search</button>
     </form>
   );
 }
